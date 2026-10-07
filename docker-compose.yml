@@ -1,0 +1,35 @@
+services:
+
+  api:
+    build: .
+
+    container_name: library_api
+
+    env_file:
+      - .env
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      mailhog:
+        condition: service_started
+
+    volumes:
+      - receipts_data:/app/generated_receipts
+      - reports_data:/app/generated_reports
+
+
+  mailhog:
+    image: mailhog/mailhog
+
+    container_name: library_mailhog
+
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+
+volumes:
+  receipts_data:
+  reports_data:
